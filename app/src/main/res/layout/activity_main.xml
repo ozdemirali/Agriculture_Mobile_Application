@@ -10,11 +10,150 @@
         android:id="@+id/imageView"
         android:layout_width="268dp"
         android:layout_height="247dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHorMiddle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorMiddle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="285dp" />
+
+    <TextView
+        android:id="@+id/textViewType"
+        android:layout_width="66dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:gravity="left|center_vertical"
+        android:minHeight="30dp"
+        android:text="@string/type_name"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerLeft"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHorMiddle" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVerLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="138dp" />
+
+    <Spinner
+        android:id="@+id/spinnerType"
+        android:layout_width="258dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:gravity="left"
+        android:entries="@array/planets_array"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVerLeft"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHorMiddle" />
+
+
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="66dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:gravity="left|center_vertical"
+        android:minHeight="30dp"
+        android:text="@string/name_name"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerLeft"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewType" />
+
+    <Spinner
+        android:id="@+id/spinnerName"
+        android:layout_width="258dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:gravity="left"
+        android:entries="@array/planets_array"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVerLeft"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerType" />
+
+    <TextView
+        android:id="@+id/textViewDisease"
+        android:layout_width="66dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:gravity="left|center_vertical"
+        android:minHeight="30dp"
+        android:text="@string/disease_name"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerLeft"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewName" />
+
+    <Spinner
+        android:id="@+id/spinnerDisease"
+        android:layout_width="258dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:gravity="left"
+        android:entries="@array/planets_array"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVerLeft"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerName" />
+
+    <TextView
+        android:id="@+id/textViewNote"
+        android:layout_width="66dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:gravity="left|center_vertical"
+        android:minHeight="30dp"
+        android:text="@string/note_name"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerLeft"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDisease"
+        app:layout_constraintVertical_bias="0.01" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="621dp" />
+
+    <EditText
+        android:id="@+id/editTextTextMultiLine"
+        android:layout_width="258dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVerLeft"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerDisease"
+        app:layout_constraintVertical_bias="0.125"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/save_name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline4"
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,7 @@
 package com.example.agricultureapplication;
 
+import static android.widget.AdapterView.*;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -15,8 +17,11 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.Cache;
@@ -40,11 +45,15 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+import controller.Service;
+import kotlin._Assertions;
 import security.HttpsTrustManager;
 
-public class MainActivity<requestQueue> extends AppCompatActivity {
+public class MainActivity<requestQueue> extends AppCompatActivity  {
 
     private ImageView imageView;
     private Button buttonSave;
@@ -55,13 +64,26 @@ public class MainActivity<requestQueue> extends AppCompatActivity {
     private String url = "https://192.168.1.245:45455/api/Type";
     private static final String TAG = MainActivity.class.getName();
 
+    private Service _service;
 
+    private Spinner spinner;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        spinner=findViewById(R.id.spinnerDisease);
+        // Spinner click listener
+        // Spinner click listener
+
+
+
+
+        _service=new Service(MainActivity.this,spinner);
         imageView=findViewById(R.id.imageView);
         buttonSave=findViewById(R.id.buttonSave);
 
@@ -119,32 +141,28 @@ public class MainActivity<requestQueue> extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 System.out.println("Tıklandı");
-
-                HttpsTrustManager.allowAllSSL();
-                StringRequest myRequest = new StringRequest(Request.Method.GET, url,
-                        response -> {
-                            try{
-                                System.out.println(response.toString());
-                                JSONArray jsonarray = new JSONArray(response);
-
-                                for (int i=0; i < jsonarray.length(); i++) {
-                                    System.out.println(jsonarray.getJSONObject(i));
-                                }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        },
-                        volleyError -> Toast.makeText(MainActivity.this, volleyError.getMessage(), Toast.LENGTH_SHORT).show()
-                );
-                //RequestQueue requestQueue = Volley.newRequestQueue(this);
-                queue.add(myRequest);
-                //sendAndRequestResponse();
-
-
-
+                System.out.println("-------------");
+                _service.getType();
             }
         });
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // your code here
+                System.out.println("Seçildi");
+                System.out.println(spinner.getSelectedItemId());
+                System.out.println(spinner.getSelectedItem());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+        });
+
+
+
 
 
     }

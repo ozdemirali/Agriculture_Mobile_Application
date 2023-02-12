@@ -18,6 +18,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Item;
 import security.HttpsTrustManager;
 
 public class Service {
@@ -27,42 +28,31 @@ public class Service {
     private String url = "https://192.168.1.245:45455/api/Type";
     private Context _context;
     private JSONArray _jsonArray;
-    private Spinner _spinner;
 
 
 
 
-    public Service(Context context, Spinner spinner){
+    public Service(Context context){
         HttpsTrustManager.allowAllSSL();
         _context=context;
         _queue= Volley.newRequestQueue(_context);
-        _spinner=spinner;
     }
 
-    public void getType(){
+    public void getType(Spinner spinner, List<String> spinnerId){
         StringRequest myRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     try{
-                        //System.out.println(response.toString());
                         JSONArray jsonarray = new JSONArray(response);
-                        List<String> spinnerId =  new ArrayList<String>();
                         List<String> spinnerArray =  new ArrayList<String>();
-
                         for (int i=0; i < jsonarray.length(); i++) {
-                            System.out.println(jsonarray.getJSONObject(i));
+                            //System.out.println(jsonarray.getJSONObject(i));
                             spinnerId.add(jsonarray.getJSONObject(i).getString("id"));
                             spinnerArray.add(jsonarray.getJSONObject(i).getString("name"));
-
                         }
 
-
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(_context, android.R.layout.simple_spinner_item, spinnerArray);
-
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        //Spinner sItems = (Spinner) findViewById(R.id.spinner1);
-                        _spinner.setAdapter(adapter);
-
-
+                        spinner.setAdapter(adapter);
                         //System.out.println(_jsonArray);
 
                     } catch (JSONException e) {
@@ -72,6 +62,5 @@ public class Service {
                 volleyError -> Toast.makeText(_context, volleyError.getMessage(), Toast.LENGTH_SHORT).show()
         );
         _queue.add(myRequest);
-
     }
 }

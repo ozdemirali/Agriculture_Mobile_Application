@@ -32,14 +32,16 @@ public class MainActivity extends AppCompatActivity  {
     private static final String TAG = MainActivity.class.getName();
 
     private Service _service;
-    private Spinner spinner;
-    private  List<String> spinnerId;
+
 
     private Spinner spinnerType;
     private List<String> spinnerTypeId;
 
     private Spinner spinnerProduct;
     private List<String> spinnerProductId;
+
+    private Spinner spinnerDisease;
+    private List<String> spinnerDiseaseId;
 
 
 
@@ -53,13 +55,13 @@ public class MainActivity extends AppCompatActivity  {
 
         spinnerType=findViewById(R.id.spinnerType);
         spinnerProduct=findViewById(R.id.spinnerProduct);
-        spinner=findViewById(R.id.spinnerDisease);
+        spinnerDisease=findViewById(R.id.spinnerDisease);
 
         _service=new Service(MainActivity.this);
-        spinnerId=new ArrayList<String>();
 
         spinnerTypeId=new ArrayList<String>();
-        spinnerProductId=new ArrayList<String>();
+
+        spinnerDiseaseId=new ArrayList<String>();
 
         imageView=findViewById(R.id.imageView);
         buttonSave=findViewById(R.id.buttonSave);
@@ -126,10 +128,28 @@ public class MainActivity extends AppCompatActivity  {
         spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                //System.out.println("Seçildi");
-                //System.out.println(spinner.getSelectedItem());
-                //System.out.println(spinnerTypeId.get(position));
+                System.out.println("Type Seçildi");
+                System.out.println(spinnerTypeId.toString());
+                spinnerProductId=new ArrayList<String>();
                 _service.getAgriculturalProduct(spinnerProduct,spinnerProductId, Integer.parseInt(spinnerTypeId.get(position)));
+                _service.getDisease(spinnerDisease,spinnerDiseaseId,Integer.parseInt(spinnerTypeId.get(position)));
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+                System.out.println("Seçilmedi");
+            }
+        });
+
+        spinnerProduct.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                System.out.println("Product Seçildi");
+
+
+
             }
 
             @Override

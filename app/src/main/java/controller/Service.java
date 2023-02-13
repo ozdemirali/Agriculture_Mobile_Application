@@ -90,4 +90,29 @@ public class Service {
         );
         _queue.add(myRequest);
     }
+    public void getDisease(Spinner spinner, List<String> spinnerId,int id){
+        StringRequest myRequest = new StringRequest(Request.Method.GET, url.getDisease+id,
+                response -> {
+                    try{
+                        JSONArray jsonarray = new JSONArray(response);
+                        List<String> spinnerArray =  new ArrayList<String>();
+                        for (int i=0; i < jsonarray.length(); i++) {
+                            System.out.println(jsonarray.getJSONObject(i));
+                            spinnerId.add(jsonarray.getJSONObject(i).getString("id"));
+                            spinnerArray.add(jsonarray.getJSONObject(i).getString("name"));
+                        }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(_context, android.R.layout.simple_spinner_item, spinnerArray);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner.setAdapter(adapter);
+                        //System.out.println(_jsonArray);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                volleyError -> Toast.makeText(_context, volleyError.getMessage(), Toast.LENGTH_SHORT).show()
+        );
+        _queue.add(myRequest);
+    }
 }

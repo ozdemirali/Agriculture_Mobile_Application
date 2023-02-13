@@ -13,19 +13,14 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-
-
 import java.util.ArrayList;
 import java.util.List;
-
 import controller.Service;
 
 public class MainActivity extends AppCompatActivity  {
@@ -40,31 +35,37 @@ public class MainActivity extends AppCompatActivity  {
     private Spinner spinner;
     private  List<String> spinnerId;
 
+    private Spinner spinnerType;
+    private List<String> spinnerTypeId;
+
+    private Spinner spinnerProduct;
+    private List<String> spinnerProductId;
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        spinnerType=findViewById(R.id.spinnerType);
+        spinnerProduct=findViewById(R.id.spinnerProduct);
         spinner=findViewById(R.id.spinnerDisease);
-        // Spinner click listener
-
-
-
 
         _service=new Service(MainActivity.this);
         spinnerId=new ArrayList<String>();
 
+        spinnerTypeId=new ArrayList<String>();
+        spinnerProductId=new ArrayList<String>();
+
         imageView=findViewById(R.id.imageView);
         buttonSave=findViewById(R.id.buttonSave);
 
-
-
         //Give camera permission
         EnableRuntimePermission();
-
         //Receiver
         activityResultLauncher=registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
@@ -83,6 +84,11 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
+        //set data to spinnerType
+        _service.getType(spinnerType,spinnerTypeId);
+        //_service.getAgriculturalProduct(spinnerProduct,spinnerProductId,1);
+
+        //Image ClickListener
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,37 +106,43 @@ public class MainActivity extends AppCompatActivity  {
 
                     System.out.println(e.getMessage());
                 }
-
-
             }
         });
 
+        //Button ClickListener
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 System.out.println("Tıklandı");
                 System.out.println("-------------");
-                _service.getType(spinner,spinnerId);
+               // _service.getType(spinner,spinnerId);
+
             }
         });
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
+
+        spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                System.out.println("Seçildi");
-                System.out.println(spinner.getSelectedItem());
-                System.out.println(spinnerId.get(position));
+                //System.out.println("Seçildi");
+                //System.out.println(spinner.getSelectedItem());
+                //System.out.println(spinnerTypeId.get(position));
+                _service.getAgriculturalProduct(spinnerProduct,spinnerProductId, Integer.parseInt(spinnerTypeId.get(position)));
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
                 // your code here
+                System.out.println("Seçilmedi");
             }
         });
     }
 
 
 
+    // Camera
     public void EnableRuntimePermission(){
         if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
                 Manifest.permission.CAMERA)) {
@@ -154,5 +166,5 @@ public class MainActivity extends AppCompatActivity  {
                 break;
         }
     }
-
+   //Camera End
 }

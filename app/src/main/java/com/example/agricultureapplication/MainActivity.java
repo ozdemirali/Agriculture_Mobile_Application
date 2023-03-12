@@ -8,30 +8,61 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.impl.client.SystemDefaultCredentialsProvider;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import controller.ApiConfig;
+import controller.AppConfig;
 import controller.Service;
+import model.AgriculturalDisease;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class MainActivity extends AppCompatActivity  {
 
     private ImageView imageView;
     private Button buttonSave;
+    private Bitmap bitmap;
     public static final int RequestPermissionCode = 1;
     ActivityResultLauncher<Intent> activityResultLauncher;
     private static final String TAG = MainActivity.class.getName();
 
     private Service _service;
+    private AgriculturalDisease _agriculturalDisease;
 
 
     private Spinner spinnerType;
@@ -42,6 +73,7 @@ public class MainActivity extends AppCompatActivity  {
 
     private Spinner spinnerDisease;
     private List<String> spinnerDiseaseId;
+
 
 
 
@@ -58,6 +90,7 @@ public class MainActivity extends AppCompatActivity  {
         spinnerDisease=findViewById(R.id.spinnerDisease);
 
         _service=new Service(MainActivity.this);
+        _agriculturalDisease=new AgriculturalDisease();
 
         spinnerTypeId=new ArrayList<String>();
 
@@ -75,8 +108,14 @@ public class MainActivity extends AppCompatActivity  {
                 try {
                     if (result.getResultCode() == RESULT_OK && result.getData()!=null) {
                         Bundle bundle= result.getData().getExtras();
-                        Bitmap bitmap = (Bitmap) bundle.get("data");
+                        bitmap = (Bitmap) bundle.get("data");
                         imageView.setImageBitmap(bitmap);
+
+                        //UploadImage(bitmap);
+                        //uploadFile(bitmap);
+                        //uploadNewBitmap(bitmap);
+                        //_service.uploadBitmap(bitmap);
+
                     }
                 }catch (Exception e){
 
@@ -118,6 +157,17 @@ public class MainActivity extends AppCompatActivity  {
                 System.out.println("Tıklandı");
                 System.out.println("-------------");
                // _service.getType(spinner,spinnerId);
+
+                int productId= Integer.parseInt(spinnerProductId.get((int) spinnerProduct.getSelectedItemId()));
+                int diseaseId= Integer.parseInt(spinnerDiseaseId.get((int) spinnerDisease.getSelectedItemId()));
+
+                _agriculturalDisease.setAgriculturalProductId(productId);
+                _agriculturalDisease.setDiseaseId(diseaseId);
+               System.out.println(_agriculturalDisease.getDiseaseId());
+               System.out.println(_agriculturalDisease.getAgriculturalProductId());
+                //_service.PostProduct();
+               _service.uploadBitmap(bitmap,_agriculturalDisease);
+
 
             }
         });
@@ -166,7 +216,7 @@ public class MainActivity extends AppCompatActivity  {
     public void EnableRuntimePermission(){
         if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
                 Manifest.permission.CAMERA)) {
-            Toast.makeText(MainActivity.this,"CAMERA permission allows us to Access CAMERA app",     Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this,"CAMERA permission allows us to Access CAMERA app",Toast.LENGTH_LONG).show();
         } else {
             ActivityCompat.requestPermissions(MainActivity.this,new String[]{
                     Manifest.permission.CAMERA}, RequestPermissionCode);
@@ -187,4 +237,6 @@ public class MainActivity extends AppCompatActivity  {
         }
     }
    //Camera End
+
+
 }

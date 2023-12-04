@@ -8,55 +8,32 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.impl.client.SystemDefaultCredentialsProvider;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-import controller.ApiConfig;
-import controller.AppConfig;
 import controller.Service;
 import model.AgriculturalDisease;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 public class MainActivity extends AppCompatActivity  {
 
     private ImageView imageView;
+    private EditText not;
     private Button buttonSave;
     private Bitmap bitmap;
+
     public static final int RequestPermissionCode = 1;
     ActivityResultLauncher<Intent> activityResultLauncher;
     private static final String TAG = MainActivity.class.getName();
@@ -97,6 +74,7 @@ public class MainActivity extends AppCompatActivity  {
         spinnerDiseaseId=new ArrayList<String>();
 
         imageView=findViewById(R.id.imageView);
+        not=findViewById(R.id.editTextNot);
         buttonSave=findViewById(R.id.buttonSave);
 
         //Give camera permission
@@ -131,8 +109,10 @@ public class MainActivity extends AppCompatActivity  {
 
         //Image ClickListener
         imageView.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
+                System.out.println("Tıklandı");
                 try {
                     //Caller
                     Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -140,6 +120,7 @@ public class MainActivity extends AppCompatActivity  {
                         activityResultLauncher.launch(intent);
 
                     }else{
+                        activityResultLauncher.launch(intent);
                         Toast.makeText(MainActivity.this,"There is no app that support this section",Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -163,9 +144,13 @@ public class MainActivity extends AppCompatActivity  {
 
                 _agriculturalDisease.setAgriculturalProductId(productId);
                 _agriculturalDisease.setDiseaseId(diseaseId);
-               System.out.println(_agriculturalDisease.getDiseaseId());
-               System.out.println(_agriculturalDisease.getAgriculturalProductId());
-                //_service.PostProduct();
+               //System.out.println(_agriculturalDisease.getDiseaseId());
+               //System.out.println(_agriculturalDisease.getAgriculturalProductId());
+                if(!not.getText().toString().isEmpty()){
+                    _agriculturalDisease.setNot(not.getText().toString());
+                }
+
+               //_service.PostProduct(_agriculturalDisease); s
                _service.uploadBitmap(bitmap,_agriculturalDisease);
 
 

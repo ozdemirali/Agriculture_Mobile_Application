@@ -17,7 +17,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.agricultureapplication.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,7 +24,6 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +57,7 @@ public class Service {
                         JSONArray jsonarray = new JSONArray(response);
                         List<String> spinnerArray =  new ArrayList<String>();
                         for (int i=0; i < jsonarray.length(); i++) {
-                            //System.out.println(jsonarray.getJSONObject(i));
+                            //sSystem.out.println(jsonarray.getJSONObject(i));
                             spinnerId.add(jsonarray.getJSONObject(i).getString("id"));
                             spinnerArray.add(jsonarray.getJSONObject(i).getString("name"));
                         }
@@ -208,6 +206,7 @@ public class Service {
             JSONObject _jsonObject = new JSONObject();
             _jsonObject.put("AgriculturalProductId",agriculturalDisease.getAgriculturalProductId());
             _jsonObject.put("DiseaseId",agriculturalDisease.getDiseaseId());
+            _jsonObject.put("Not",agriculturalDisease.getNot());
 
             _jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url.postDisease, _jsonObject,
                     new Response.Listener<JSONObject>() {

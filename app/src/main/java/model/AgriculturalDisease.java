@@ -4,6 +4,15 @@ public class AgriculturalDisease {
     private String Id;
     private int AgriculturalProductId;
     private int DiseaseId;
+    private String Not;
+
+    public String getNot() {
+        return Not;
+    }
+
+    public void setNot(String not) {
+        Not = not;
+    }
 
     public String getId() {
         return Id;

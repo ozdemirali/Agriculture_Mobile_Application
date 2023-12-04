@@ -5,6 +5,15 @@ public class AgriculturalDisease {
     private int AgriculturalProductId;
     private int DiseaseId;
     private String Not;
+    private String ImageName;
+
+    public String getImageName() {
+        return ImageName;
+    }
+
+    public void setImageName(String imageName) {
+        ImageName = imageName;
+    }
 
     public String getNot() {
         return Not;

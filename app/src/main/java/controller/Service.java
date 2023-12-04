@@ -151,6 +151,7 @@ public class Service {
                             //System.out.println(response.toString());
                             System.out.println(obj.getString("fileName"));
                             Toast.makeText(_context.getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                            agriculturalDisease.setImageName(obj.getString("fileName"));
                             PostProduct(agriculturalDisease);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -207,6 +208,7 @@ public class Service {
             _jsonObject.put("AgriculturalProductId",agriculturalDisease.getAgriculturalProductId());
             _jsonObject.put("DiseaseId",agriculturalDisease.getDiseaseId());
             _jsonObject.put("Not",agriculturalDisease.getNot());
+            _jsonObject.put("ImageName",agriculturalDisease.getImageName());
 
             _jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url.postDisease, _jsonObject,
                     new Response.Listener<JSONObject>() {

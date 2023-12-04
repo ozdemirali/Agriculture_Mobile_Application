@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity  {
                         Bundle bundle= result.getData().getExtras();
                         bitmap = (Bitmap) bundle.get("data");
                         imageView.setImageBitmap(bitmap);
+                        System.out.println(bitmap);
 
                         //UploadImage(bitmap);
                         //uploadFile(bitmap);
